@@ -5,6 +5,7 @@ import type { ColumnsType } from 'antd/es/table';
 export default function ProductComponent() {
   interface DataType {
     id: number;
+    description: string;
     name: string;
     fund: string;
     accountType: string;
@@ -43,7 +44,6 @@ export default function ProductComponent() {
   };
 
   const onFinish = (values: any) => {
-    console.log('Success:', values);
     form.resetFields();
     setOpen(false);
   };
@@ -68,12 +68,21 @@ export default function ProductComponent() {
     }
   };
 
-  const handleClick = () => {
-    setOpen(true);
+  const handleClick = (id: number) => {
+    setOpen(true)
+    if(id !== 0) {
+      const value = data.find(x => x.id === id)
+      form.setFieldsValue({ name: value?.name, description: value?.description, fund: value?.fund});
+    }
   };
 
-  const Submit = () => {
+  const Submit = async () => {
+    // Validate the form
+    // form.validateFields().then((values ) => {
+    //   console.log(values )
+    // })
     console.log('Success:', form.getFieldsValue());
+
     form.resetFields();
     setOpen(false);
   };
@@ -175,7 +184,9 @@ export default function ProductComponent() {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a>Edit</a>
+          <Button onClick={() => handleClick(record.id)}  style={{  border: 'none' }}>
+            Edit
+          </Button>
           <Button onClick={() => showDeleteConfirm(record.id)} type="dashed" style={{ color: 'red', border: 'none' }}>
             Delete
           </Button>
@@ -189,6 +200,7 @@ export default function ProductComponent() {
     {
       id: 1,
       name: "Jone",
+      description: "ds1",
       fund: "Fund 1",
       accountType: "Test",
       tenor: 1,
@@ -201,6 +213,7 @@ export default function ProductComponent() {
     {
       id: 20,
       name: 'Jim Green',
+      description: "ds2",
       fund: "Fund 3",
       accountType: "Test",
       tenor: 1,
@@ -213,6 +226,7 @@ export default function ProductComponent() {
     {
       id: 3,
       name: 'Joe Black',
+      description: "ds3",
       fund: "Fund 3",
       accountType: "Test",
       tenor: 1,
@@ -229,7 +243,7 @@ export default function ProductComponent() {
     <Space size={5} direction="vertical" style={{ width: '98%', height: '100%' }}>
       <div>
         <Typography.Title level={3}>Products</Typography.Title>
-        <button onClick={handleClick} style={{ float: 'right' }}>Add</button>
+        <button onClick={() => handleClick(0)} style={{ float: 'right' }}>Add</button>
         <Modal
           title="Add Product"
           open={open}
@@ -254,7 +268,19 @@ export default function ProductComponent() {
             <Form.Item<FieldType>
               label="Name"
               name="name"
-              rules={[{ required: true, message: 'Please input your name!' }]}
+              
+              rules={[
+                { 
+                required: true, message: 'Please input your name!' 
+                },
+                { 
+                  min: 6,  message: 'Please input your name > 6' 
+                },
+                { 
+                  max: 8,  message: 'Please input your name < 8' 
+                },
+
+            ]}
             >
               <Input />
             </Form.Item>
@@ -286,7 +312,15 @@ export default function ProductComponent() {
             <Form.Item<FieldType>
               label="Description"
               name="description"
-              rules={[{ required: true, message: 'Please input your description!' }]}
+              rules={[
+                { 
+                  required: true, message: 'Please input your description!' 
+                },
+                {
+                  pattern: /^[a-zA-Z0-9]+$/,
+                  message: 'Description can only include letters and numbers.',
+                },
+              ]}
             >
               <Input />
             </Form.Item>
