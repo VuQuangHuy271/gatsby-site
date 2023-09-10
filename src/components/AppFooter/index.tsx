@@ -1,5 +1,4 @@
 import React from "react";
-import { Typography } from "antd";
 
 export const AppFooter = () => {
   return (

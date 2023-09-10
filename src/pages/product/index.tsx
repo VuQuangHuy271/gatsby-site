@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Input, Modal, Select, Space, Table, Tag, Typography } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { AppHeader } from "../../components/AppHeader";
-
 
 export default function ProductComponent() {
   interface DataType {
@@ -18,13 +16,12 @@ export default function ProductComponent() {
     repaymentModes: string[]
   }
 
-  const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
 
   const [form] = Form.useForm();
   const { confirm } = Modal;
 
-  const showDeleteConfirm = () => {
+  const showDeleteConfirm = (id: number) => {
     confirm({
       title: 'Are you sure delete this product?',
       content: 'Some descriptions',
@@ -32,7 +29,7 @@ export default function ProductComponent() {
       okType: 'danger',
       cancelText: 'No',
       onOk() {
-        console.log('OK');
+        console.log(id);
       },
       onCancel() {
         console.log('Cancel');
@@ -179,7 +176,7 @@ export default function ProductComponent() {
       render: (_, record) => (
         <Space size="middle">
           <a>Edit</a>
-          <Button onClick={showDeleteConfirm} type="dashed" style={{ color: 'red', border: 'none'}}>
+          <Button onClick={() => showDeleteConfirm(record.id)} type="dashed" style={{ color: 'red', border: 'none' }}>
             Delete
           </Button>
         </Space>
@@ -202,7 +199,7 @@ export default function ProductComponent() {
       repaymentModes: ["abc", "xyz", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
     },
     {
-      id: 2,
+      id: 20,
       name: 'Jim Green',
       fund: "Fund 3",
       accountType: "Test",
@@ -228,10 +225,11 @@ export default function ProductComponent() {
   ];
 
   return (
+
     <Space size={5} direction="vertical" style={{ width: '98%', height: '100%' }}>
       <div>
         <Typography.Title level={3}>Products</Typography.Title>
-        <button onClick={handleClick} style={{float: 'right'}}>Add</button>
+        <button onClick={handleClick} style={{ float: 'right' }}>Add</button>
         <Modal
           title="Add Product"
           open={open}

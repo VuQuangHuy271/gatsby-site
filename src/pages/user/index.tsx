@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function TestComponent() {
+export default function UserComponent() {
   return (
     <div>index</div>
   )

@@ -12,7 +12,6 @@ export default function AccountComponent() {
     email: string;
     phone: string;
   }
-  const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState([]);
   const columns: ColumnsType<DataType> = [
     {
