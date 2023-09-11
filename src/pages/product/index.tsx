@@ -56,13 +56,13 @@ export default function ProductComponent() {
   const onFundChange = (value: string) => {
     switch (value) {
       case 'fund1':
-        form.setFieldsValue({ note: 'fund1' });
+        form.setFieldsValue({ fund: 'fund1' });
         break;
       case 'fund2':
-        form.setFieldsValue({ note: 'fund2' });
+        form.setFieldsValue({ fund: 'fund2' });
         break;
       case 'other':
-        form.setFieldsValue({ note: 'fund3' });
+        form.setFieldsValue({ fund: 'fund3' });
         break;
       default:
     }

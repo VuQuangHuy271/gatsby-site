@@ -10,8 +10,6 @@ import { redirect } from "react-router-dom";
 import { navigate } from "gatsby";
 
 export const NavMenu = () => {
-    const [selectedKeys, setSelectedKeys] = useState("/");
-    
     return (
         <div className="NavMenu">
             <Menu

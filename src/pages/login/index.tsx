@@ -3,10 +3,12 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import { Form, Input, Button, Checkbox, Row } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { navigate } from "gatsby";
 
 const Login: React.FC = () => {
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values);
+    navigate('/')
   };
 
   return (
@@ -66,7 +68,6 @@ const Login: React.FC = () => {
           >
             Log in
           </Button>
-          Or <a href="">register now!</a>
         </Form.Item>
       </Form>
     </Row>
