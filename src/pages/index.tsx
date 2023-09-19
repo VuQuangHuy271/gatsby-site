@@ -1,15 +1,29 @@
-
+import { Button, Card } from 'antd'
+import * as React from "react"
 import type { HeadFC, PageProps } from "gatsby"
-import React from "react";
-import App from "./app";
 
+interface UserResponse {
+  fullName: string
+  phone: string
+  fund: {
+    fullName: string
+    shortName: string
+  }
+}
+interface ListUserResponse {
+  list: UserResponse[]
+}
 
 const IndexPage: React.FC<PageProps> = () => {
+ 
   return (
-    <App/>
-  );
+    <>
+      {/* <Card>Xin chao {user.data?.fullName}, {user.data?.fund.fullName}</Card>
+      <Button>Xin chao {user.data?.fullName}, {user.data?.fund.fullName}</Button> */}
+    </>
+  )
 }
 
 export default IndexPage
 
-export const Head: HeadFC = () => <title>Home Page</title>
+export const Head: HeadFC = () => <title>Home Page </title>

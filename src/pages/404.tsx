@@ -1,5 +1,6 @@
 import * as React from "react"
 import { Link, HeadFC, PageProps } from "gatsby"
+import { useFetch } from "../../lib/hooks/useFetch"
 
 const pageStyles = {
   color: "#232129",
