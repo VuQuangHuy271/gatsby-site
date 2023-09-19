@@ -10,7 +10,10 @@ import {
 import type { MenuProps } from 'antd';
 import { Button, Menu, Row } from 'antd';
 import { navigate } from "gatsby";
+import Sider from 'antd/es/layout/Sider';
+import Layout from './Layout';
 type MenuItem = Required<MenuProps>['items'][number];
+
 
 function getItem(
   label: React.ReactNode,
@@ -57,76 +60,74 @@ export const NavMenu = () => {
 
   return (
     <div className="NavMenu">
-      <div style={{ width: '100%' }}>
-        <Menu
-          style={{ paddingRight: 20, border: 0 }}
-          defaultSelectedKeys={['1']}
-          defaultOpenKeys={['sub1']}
-          mode="inline"
-          theme="light"
-          inlineCollapsed={collapsed}
-          onClick={(item) => {
-            //item.key
-            navigate(item.key);
-          }}
-          items={[
-            {
-              label: "Dashboard",
-              icon: <AppstoreOutlined />,
-              key: "/",
-            },
-            {
-              label: "Fund",
-              key: "/fund",
-              icon: <ShopOutlined />,
-            },
-            {
-              label: "Product",
-              key: "/product",
-              icon: <ShoppingCartOutlined />,
-              children: [
-                {
-                  label: "Option 1",
-                  key: "/",
-                  icon: <ShoppingCartOutlined />,
-                },
-                {
-                  label: "Option 2",
-                  key: "/",
-                  icon: <ShoppingCartOutlined />,
-                }
-              ]
-            },
-            {
-              label: "Account",
-              key: "/account",
-              icon: <UserOutlined />,
-              children: [
-                {
-                  label: "Option 1",
-                  key: "/",
-                  icon: <UserOutlined />,
-                },
-                {
-                  label: "Option 2",
-                  key: "/",
-                  icon: <UserOutlined />,
-                }
-              ]
-            },
-            {
-              label: "User",
-              key: "/user",
-              icon: <UserOutlined />,
-            },
-          ]}
-        />
-        <div style={{ position: 'fixed', zIndex: 0, bottom: 0, left: 0, padding: 10}}>
-          <Button onClick={toggleCollapsed}>
-            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          </Button>
+      {/* <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} style={{ textAlign: 'center', width: 60 }}> */}
+      <Sider  collapsed={collapsed} style={{ textAlign: 'center', width: 60 }}>
+        <div style={{ width: '100%' }}>
+          <div className="demo-logo-vertical" />
+          <Menu
+            style={{ paddingRight: 10, border: 0 }}
+            defaultSelectedKeys={['1']}
+            defaultOpenKeys={['sub1']}
+            mode="inline"
+            theme="light"
+            inlineCollapsed={collapsed}
+            onClick={(item) => {
+              //item.key
+              navigate(item.key);
+            }}
+            items={[
+              {
+                label: "Dashboard",
+                icon: <AppstoreOutlined />,
+                key: "/",
+              },
+              {
+                label: "Fund",
+                key: "/fund",
+                icon: <ShopOutlined />,
+              },
+              {
+                label: "Product",
+                key: "/product",
+                icon: <ShoppingCartOutlined />,
+              },
+              {
+                label: "Account",
+                key: "/account",
+                icon: <UserOutlined />,
+              },
+              {
+                label: "User",
+                key: "/user",
+                icon: <UserOutlined />,
+              },
+              {
+                label: "Test",
+                key: "/product",
+                icon: <ShoppingCartOutlined />,
+                children: [
+                  {
+                    label: "Option 1",
+                    key: "/product",
+                    icon: <ShoppingCartOutlined />,
+                  },
+                  {
+                    label: "Option 2",
+                    key: "/",
+                    icon: <ShoppingCartOutlined />,
+                  }
+                ]
+              },
+            ]}
+          />
+          <div style={{ position: 'fixed', zIndex: 0, bottom: 0, left: 0, padding: 10 }}>
+            <Button onClick={toggleCollapsed}>
+              {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            </Button>
+          </div>
         </div>
-      </div>
+      </Sider>
+
     </div>
   );
 }

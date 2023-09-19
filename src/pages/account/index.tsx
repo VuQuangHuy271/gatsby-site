@@ -1,7 +1,9 @@
 import React from "react";
-import { Avatar, Button, Modal, Space, Table, Tag, Typography } from 'antd';
-import { useEffect, useState } from "react";
-import { ColumnsType } from "antd/es/table";
+import { ConfigProvider, Button, Modal, Space } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { ProTable, ProColumns } from '@ant-design/pro-components';
+import viVNIntl from 'antd/lib/locale/vi_VN';
+import { Breadcrumb } from 'antd';
 
 export default function AccountComponent() {
   interface DataType {
@@ -141,7 +143,7 @@ export default function AccountComponent() {
     },
   ]
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ProColumns<DataType>[] = [
     {
       title: "Fund",
       dataIndex: "fund",
@@ -209,42 +211,42 @@ export default function AccountComponent() {
       title: "Repayment Frequency",
       dataIndex: "repaymentFrequency",
       key: 'repaymentFrequency',
-      render: (items: string[]) => (
-        <>
-          {items.map((item) => (
+      render: (_, record) => (
+        <Space>
+          {record.repaymentFrequency.map((item) => (
             <p color="blue" key={item}>
               {item}
             </p>
           ))}
-        </>
+        </Space>
       )
     },
     {
       title: "Rollover Mode",
       dataIndex: "rolloverMode",
       key: 'rolloverMode',
-      render: (items: string[]) => (
-        <>
-          {items.map((item) => (
+      render: (_, record) => (
+        <Space>
+          {record.rolloverMode.map((item) => (
             <p color="blue" key={item}>
               {item}
             </p>
           ))}
-        </>
+        </Space>
       )
     },
     {
       title: "Repayment Frequency Mode",
       dataIndex: "repaymentFrequencyMode",
       key: 'repaymentFrequencyMode',
-      render: (items: string[]) => (
-        <>
-          {items.map((item) => (
+      render: (_, record) => (
+        <Space>
+          {record.repaymentFrequencyMode.map((item) => (
             <p color="blue" key={item}>
               {item}
             </p>
           ))}
-        </>
+        </Space>
       )
     },
     {
@@ -270,36 +272,72 @@ export default function AccountComponent() {
   };
   return (
     <Space size={5} direction="vertical" style={{ width: '98%', height: '90%' }}>
-      <Typography.Title level={3}>Accounts</Typography.Title>
-      <button onClick={() => handleClick(0)} style={{ float: 'right' }}>Add</button>
-      <Table
-        columns={columns}
-        dataSource={
-          data.map((item) => {
-            return (
-              {
-                id: item.id,
-                fund: item.fund.fullName,
-                user: item.user.fullName,
-                accountType: item.accountTypeId.description,
-                accountNumber: item.accountNumber,
-                tenor: item.tenor,
-                interestRate: item.interestRate,
-                openDate: converDateToString(new Date(item.openDate), 'dd/MM/yyyy'),
-                closeDate: converDateToString(new Date(item.closeDate), 'dd/MM/yyyy'),
-                principalAmount: item.principalAmount,
-                balance: item.balance,
-                repaymentFrequency: item.repaymentFrequency.map(x => x.description),
-                rolloverMode: item.rolloverMode.map(x => x.description),
-                repaymentFrequencyMode: item.repaymentFrequencyMode.map(x => x.description),
-              }
-            )
-          })
-        }
-        pagination={{
-          pageSize: 5,
-        }}
-      ></Table>
+      <div style={{ height: 30, paddingTop: 10, paddingLeft: 10 }}>
+        <Breadcrumb
+          items={[
+            {
+              title: 'Home',
+            },
+            {
+              title: 'Account',
+
+            },
+          ]}
+        /></div>
+      <ConfigProvider locale={viVNIntl}>
+        <ProTable<DataType>
+          columns={columns}
+          rowKey="key"
+          search={false}
+          headerTitle=" "
+          options={
+            {
+              reload: false,
+            }
+          }
+          toolbar={{
+            search: {
+              onSearch: (value: string) => {
+                alert(value);
+              },
+            },
+            actions: [
+              <Button type="primary" onClick={() => handleClick(0)} style={{ float: 'right' }}>
+                <PlusOutlined />
+                Thêm
+              </Button>
+            ],
+          }}
+          dataSource={
+            data.map((item) => {
+              return (
+                {
+                  id: item.id,
+                  fund: item.fund.fullName,
+                  user: item.user.fullName,
+                  accountType: item.accountTypeId.description,
+                  accountNumber: item.accountNumber,
+                  tenor: item.tenor,
+                  interestRate: item.interestRate,
+                  openDate: converDateToString(new Date(item.openDate), 'dd/MM/yyyy'),
+                  closeDate: converDateToString(new Date(item.closeDate), 'dd/MM/yyyy'),
+                  principalAmount: item.principalAmount,
+                  balance: item.balance,
+                  repaymentFrequency: item.repaymentFrequency.map(x => x.description),
+                  rolloverMode: item.rolloverMode.map(x => x.description),
+                  repaymentFrequencyMode: item.repaymentFrequencyMode.map(x => x.description),
+                }
+              )
+            })
+          }
+          pagination={{
+            pageSize: 7,
+            showTotal: (total, range) => (
+              <div>{`Hiển thị ${range[0]}-${range[1]} trên ${total}`}</div>
+            ),
+          }}
+        />
+      </ConfigProvider>
     </Space>
   );
 }

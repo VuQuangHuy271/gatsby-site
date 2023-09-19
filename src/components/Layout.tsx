@@ -6,6 +6,7 @@ import Login from '../pages/login';
 
 export default function Layout({ children }) {
   const isLoginPage = children.props.path === '/login/';
+
   return (
 
     isLoginPage ? <Login /> :

@@ -1,6 +1,9 @@
-import { Space, Typography, Table, Button, Modal, Form, Input, Select } from 'antd'
-import { ColumnsType } from 'antd/es/table'
+import { Space, ConfigProvider, Button, Modal, Form, Input } from 'antd'
 import React, { useState } from 'react'
+import { PlusOutlined } from '@ant-design/icons';
+import { ProTable, ProColumns } from '@ant-design/pro-components';
+import viVNIntl from 'antd/lib/locale/vi_VN';
+import { Breadcrumb } from 'antd';
 
 export default function FundComponent() {
   const [form] = Form.useForm();
@@ -21,7 +24,7 @@ export default function FundComponent() {
     accountStatus?: string
   };
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ProColumns<DataType>[] = [
     {
       title: 'Full name',
       dataIndex: 'fullName',
@@ -109,8 +112,18 @@ export default function FundComponent() {
 
   return (
     <Space size={5} direction="vertical" style={{ width: '98%', height: '100%' }}>
-      <Typography.Title level={3}>Fund</Typography.Title>
-      <button onClick={() => AddFund(0)} style={{ float: 'right' }}>Add</button>
+      <div style={{ height: 30, paddingTop: 10, paddingLeft: 10 }}>
+        <Breadcrumb
+          items={[
+            {
+              title: 'Home',
+            },
+            {
+              title: 'Fund',
+
+            },
+          ]}
+        /></div>
       <Modal
         title="Add Product"
         open={open}
@@ -172,25 +185,51 @@ export default function FundComponent() {
           </Form.Item>
         </Form>
       </Modal>
-      <Table
-        columns={columns}
-        dataSource={
-          data.map((item) => {
-            return (
-              {
-                id: item.id,
-                fullName: item.fullName,
-                phone: item.phone,
-                accountStatus: item.accountStatus,
-                shortName: item.shortName,
-              }
-            )
-          })
-        }
-        pagination={{
-          pageSize: 5,
-        }}
-      ></Table>
+      <ConfigProvider locale={viVNIntl}>
+        <ProTable<DataType>
+          columns={columns}
+          rowKey="key"
+          search={false}
+          headerTitle=" "
+          options={
+            {
+              reload: false,
+            }
+          }
+          toolbar={{
+            search: {
+              onSearch: (value: string) => {
+                alert(value);
+              },
+            },
+            actions: [
+              <Button type="primary" onClick={() => AddFund(0)} style={{ float: 'right' }}>
+                <PlusOutlined />
+                Thêm
+              </Button>
+            ],
+          }}
+          dataSource={
+            data.map((item) => {
+              return (
+                {
+                  id: item.id,
+                  fullName: item.fullName,
+                  phone: item.phone,
+                  accountStatus: item.accountStatus,
+                  shortName: item.shortName,
+                }
+              )
+            })
+          }
+          pagination={{
+            pageSize: 7,
+            showTotal: (total, range) => (
+              <div>{`Hiển thị ${range[0]}-${range[1]} trên ${total}`}</div>
+            ),
+          }}
+        />
+      </ConfigProvider>
     </Space>
   );
 }

@@ -1,6 +1,11 @@
 import React, { useState } from "react";
-import { Button, DatePicker, Form, Input, Modal, Row, Select, Space, Table, Tag, Typography } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import { Button, DatePicker, Form, Input, Modal, Row, Select, Space, ConfigProvider } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { ProTable, ProColumns } from '@ant-design/pro-components';
+import viVNIntl from 'antd/lib/locale/vi_VN';
+import { Breadcrumb } from 'antd';
+import { ColumnType } from "antd/es/table";
+
 
 
 export default function ProductComponent() {
@@ -58,7 +63,7 @@ export default function ProductComponent() {
     setOpen(false);
   };
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ProColumns<DataType>[] = [
     {
       title: 'Name',
       dataIndex: 'name',
@@ -84,42 +89,42 @@ export default function ProductComponent() {
           title: 'Tenor',
           dataIndex: 'tenor',
           key: 'tenor',
-          render: (items: number[]) => (
-            <>
-              {items.map((item) => (
+          render: (_, record) => (
+            <Space>
+              {record.tenor.map((item) => (
                 <p color="blue" key={item}>
                   {item}
                 </p>
               ))}
-            </>
+            </Space>
           )
         },
         {
           title: 'Rate',
           dataIndex: 'rate',
           key: 'rate',
-          render: (items: number[]) => (
-            <>
-              {items.map((item) => (
+          render: (_, record) => (
+            <Space>
+              {record.rate.map((item) => (
                 <p color="blue" key={item}>
                   {item}
                 </p>
               ))}
-            </>
+            </Space>
           )
         },
         {
           title: 'Description',
           dataIndex: 'interestRateDescription',
           key: 'interestRateDescription',
-          render: (items: string[]) => (
-            <>
-              {items.map((item) => (
+          render: (_, record) => (
+            <Space>
+              {record.interestRateDescription.map((item) => (
                 <p color="blue" key={item}>
                   {item}
                 </p>
               ))}
-            </>
+            </Space>
           )
         },
       ]
@@ -128,14 +133,14 @@ export default function ProductComponent() {
       title: 'RolloverModes',
       dataIndex: 'rolloverModes',
       key: 'rolloverModes',
-      render: (items: string[]) => (
-        <>
-          {items.map((item) => (
+      render: (_, record) => (
+        <Space>
+          {record.rolloverModes.map((item) => (
             <p color="blue" key={item}>
               {item}
             </p>
           ))}
-        </>
+        </Space>
       )
     },
     {
@@ -143,14 +148,14 @@ export default function ProductComponent() {
       dataIndex: 'repaymentFrequencies',
       key: 'repaymentFrequencies',
       width: '10%',
-      render: (items: string[]) => (
-        <>
-          {items.map((item) => (
+      render: (_, record) => (
+        <Space>
+          {record.repaymentFrequencies.map((item) => (
             <p color="blue" key={item}>
               {item}
             </p>
           ))}
-        </>
+        </Space>
       )
     },
     {
@@ -158,14 +163,14 @@ export default function ProductComponent() {
       dataIndex: 'repaymentModes',
       key: 'repaymentModes',
       width: '10%',
-      render: (items: string[]) => (
-        <>
-          {items.map((item) => (
+      render: (_, record) => (
+        <Space>
+          {record.repaymentModes.map((item) => (
             <p color="blue" key={item}>
               {item}
             </p>
           ))}
-        </>
+        </Space>
       )
     },
     {
@@ -352,8 +357,18 @@ export default function ProductComponent() {
 
   return (
     <Space size={5} direction="vertical" style={{ width: '98%', height: '90%' }}>
-      <Typography.Title level={3}>Products</Typography.Title>
-      <button onClick={() => handleClick(0)} style={{ float: 'right' }}>Add</button>
+      <div style={{ height: 30, paddingTop: 10, paddingLeft: 10 }}>
+        <Breadcrumb
+          items={[
+            {
+              title: 'Home',
+            },
+            {
+              title: 'Product',
+
+            },
+          ]}
+        /></div>
       <Modal
         title="Add Product"
         open={open}
@@ -372,7 +387,7 @@ export default function ProductComponent() {
           form={form}
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 10 }}
-          style={{  }}
+          style={{}}
           onFinish={Submit}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
@@ -381,7 +396,7 @@ export default function ProductComponent() {
             <Form.Item<FieldType>
               label="Name"
               name="name"
-              style={{width: '50%'}}
+              style={{ width: '50%' }}
               rules={[
                 {
                   required: true, message: 'Please input your name!'
@@ -400,7 +415,7 @@ export default function ProductComponent() {
             <Form.Item<FieldType>
               label="description"
               name="description"
-              style={{width: '50%'}}
+              style={{ width: '50%' }}
               rules={[
                 {
                   required: true, message: 'Please input your description!'
@@ -411,37 +426,37 @@ export default function ProductComponent() {
                 },
               ]}
             >
-              <Input style={{width: 300}}/>
+              <Input style={{ width: 300 }} />
             </Form.Item>
           </Row>
           <Row>
-          <Form.Item name="fund" label="Fund" style={{width: '50%'}} rules={[{ required: true }]}>
-            <Select
-              placeholder="Select Fund"
-              onChange={onFundChange}
-              allowClear
-            >
-              {
-                data.map(x => (<Select.Option value={x.fund.fullName}>{x.fund.fullName}</Select.Option>))
-              }
-            </Select>
-          </Form.Item>
+            <Form.Item name="fund" label="Fund" style={{ width: '50%' }} rules={[{ required: true }]}>
+              <Select
+                placeholder="Select Fund"
+                onChange={onFundChange}
+                allowClear
+              >
+                {
+                  data.map(x => (<Select.Option value={x.fund.fullName}>{x.fund.fullName}</Select.Option>))
+                }
+              </Select>
+            </Form.Item>
           </Row>
 
-          
+
           <Row>
-            <Form.Item<FieldType> name="dateStart" label="Date Start" style={{width: '50%'}}>
+            <Form.Item<FieldType> name="dateStart" label="Date Start" style={{ width: '50%' }}>
               <DatePicker
                 placeholder="Select Date Start"
-                onChange={(date) =>  form.setFieldsValue({ dataStart: date })}
+                onChange={(date) => form.setFieldsValue({ dataStart: date })}
                 name="dateStart"
                 format="YYYY-MM-DD"
               />
             </Form.Item>
-            <Form.Item<FieldType> name="dateEnd" label="Date end" style={{width: '50%'}}>
+            <Form.Item<FieldType> name="dateEnd" label="Date end" style={{ width: '50%' }}>
               <DatePicker
                 placeholder="Select Date end"
-                onChange={(date) =>  form.setFieldsValue({ dataStart: date })}
+                onChange={(date) => form.setFieldsValue({ dataStart: date })}
                 name="dateEnd"
                 format="YYYY-MM-DD"
               />
@@ -455,29 +470,57 @@ export default function ProductComponent() {
         </Form>
 
       </Modal>
-      <Table
-        columns={columns}
-        dataSource={
-          data.map((item) => {
-            return (
-              {
-                id: item.id,
-                description: item.description,
-                name: item.description,
-                fund: item.fund.fullName,
-                accountType: item.accountType.description,
-                tenor: item.interestRates.map(x => x.tenor),
-                rate: item.interestRates.map(x => x.rate),
-                interestRateDescription: item.interestRates.map(x => x.description),
-                rolloverModes: item.rolloverModes.map(x => x.description),
-                repaymentFrequencies: item.repaymentFrequencies.map(x => x.description),
-                repaymentModes: item.repaymentModes.map(x => x.description)
-              }
-            )
-          })
-        }
-        rowKey={"id"}
-      />
+      <ConfigProvider locale={viVNIntl}>
+        <ProTable<DataType>
+          columns={columns}
+          rowKey="key"
+          search={false}
+          headerTitle=" "
+          options={
+            {
+              reload: false,
+            }
+          }
+          toolbar={{
+            search: {
+              onSearch: (value: string) => {
+                alert(value);
+              },
+            },
+            actions: [
+              <Button type="primary" onClick={() => handleClick(0)} style={{ float: 'right' }}>
+                <PlusOutlined />
+                Thêm
+              </Button>
+            ],
+          }}
+          dataSource={
+            data.map((item) => {
+              return (
+                {
+                  id: item.id,
+                  description: item.description,
+                  name: item.description,
+                  fund: item.fund.fullName,
+                  accountType: item.accountType.description,
+                  tenor: item.interestRates.map(x => x.tenor),
+                  rate: item.interestRates.map(x => x.rate),
+                  interestRateDescription: item.interestRates.map(x => x.description),
+                  rolloverModes: item.rolloverModes.map(x => x.description),
+                  repaymentFrequencies: item.repaymentFrequencies.map(x => x.description),
+                  repaymentModes: item.repaymentModes.map(x => x.description)
+                }
+              )
+            })
+          }
+          pagination={{
+            pageSize: 7,
+            showTotal: (total, range) => (
+              <div>{`Hiển thị ${range[0]}-${range[1]} trên ${total}`}</div>
+            ),
+          }}
+        />
+      </ConfigProvider>
     </Space>
   )
 }
